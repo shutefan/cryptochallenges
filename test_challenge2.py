@@ -2,7 +2,7 @@ import unittest
 import set1_challenge2
 
 
-class TestStringMethods(unittest.TestCase):
+class TestChallenge(unittest.TestCase):
 
     def test(self):
         buf1 = "1c0111001f010100061a024b53535009181c"
