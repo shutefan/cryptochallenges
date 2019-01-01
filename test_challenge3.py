@@ -1,5 +1,5 @@
 import unittest
-from set1_challenge3 import *
+from set1_challenge3 import decrypt_xor
 
 
 class TestChallenge(unittest.TestCase):
