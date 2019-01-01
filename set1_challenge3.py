@@ -21,13 +21,18 @@ class XorDecryptResult:
 
 def decrypt_xor(encrypted: str) -> List[XorDecryptResult]:
     raw = bytes.fromhex(encrypted)
-    results = []
+    results: List[XorDecryptResult] = []
 
     for c in string.ascii_letters:
         decrypted = bytes([b ^ ord(c) for b in raw])
-        as_ascii = decrypted.decode('ascii')
+        try:
+            as_ascii = decrypted.decode('ascii')
+        except UnicodeDecodeError:
+            continue
+
         score = _score(as_ascii)
-        results.append(XorDecryptResult(score, c, encrypted, as_ascii))
+        result = XorDecryptResult(score, c, encrypted, as_ascii)
+        results.append(result)
 
     results.sort(key=lambda elem: elem.score, reverse=True)
     return results
@@ -38,4 +43,7 @@ def _score(candidate: str) -> int:
     for c in candidate:
         if str.isalpha(c) or c == " ":
             score += 1
+        # ASCII characters 0 to 31 are control characters; 127 is DEL
+        elif ord(c) < 32 or ord(c) == 127:
+            score -= 1
     return score
