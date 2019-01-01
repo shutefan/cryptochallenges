@@ -31,8 +31,9 @@ def decrypt_xor(encrypted: str) -> List[XorDecryptResult]:
             continue
 
         score = _score(as_ascii)
-        result = XorDecryptResult(score, c, encrypted, as_ascii)
-        results.append(result)
+        if score > 0:
+            result = XorDecryptResult(score, c, encrypted, as_ascii)
+            results.append(result)
 
     results.sort(key=lambda elem: elem.score, reverse=True)
     return results
@@ -45,5 +46,5 @@ def _score(candidate: str) -> int:
             score += 1
         # ASCII characters 0 to 31 are control characters; 127 is DEL
         elif ord(c) < 32 or ord(c) == 127:
-            score -= 1
+            return -1
     return score
